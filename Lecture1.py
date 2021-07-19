@@ -16,16 +16,16 @@ class Food(object):
     def __str__(self):
         return self.name + '=value:' + str(self.value) + ',calories:' + str(self.calories)
         
-  def buildMenu(names, values, calories):
-    """names, values, calories lists of same length. 
-    name a list of strings
-    values and calories list of numbers
-    returns list of Foods
-    """
-    menu = []
-    for i in range(len(values)):
-        menu.append(Food(names[i], values[i], calories[i]))
-    return menu
+def buildMenu(names, values, calories):
+  """names, values, calories lists of same length. 
+  name a list of strings
+  values and calories list of numbers
+  returns list of Foods
+  """
+  menu = []
+  for i in range(len(values)):
+      menu.append(Food(names[i], values[i], calories[i]))
+  return menu
 
 def greedy(items, maxCost, keyFunction):
     """ Assumes items a list, maxCost >=0, 
