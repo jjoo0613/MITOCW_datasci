@@ -3,29 +3,29 @@ class Food(object):
         self.name =n
         self.value = v
         self.calories = w
-        
+
     def getValue(self):
         return self.value
-    
+
     def getCost(self):
         return self.calories 
-        
+
     def density(self):
         return self.getValue()/self.getCost()
-    
+
     def __str__(self):
         return self.name + '=value:' + str(self.value) + ',calories:' + str(self.calories)
-        
+
 def buildMenu(names, values, calories):
-  """names, values, calories lists of same length. 
-  name a list of strings
-  values and calories list of numbers
-  returns list of Foods
-  """
-  menu = []
-  for i in range(len(values)):
-      menu.append(Food(names[i], values[i], calories[i]))
-  return menu
+    """names, values, calories lists of same length. 
+    name a list of strings
+    values and calories list of numbers
+    returns list of Foods
+    """
+    menu = []
+    for i in range(len(values)):
+        menu.append(Food(names[i], values[i], calories[i]))
+    return menu
 
 def greedy(items, maxCost, keyFunction):
     """ Assumes items a list, maxCost >=0, 
@@ -39,17 +39,17 @@ def greedy(items, maxCost, keyFunction):
             totalCost += itemsCopy[i].getCost()
             totalValue += itemsCopy[i].getValue()
     return (result, totalValue)
-    
+
 def testGreedy(items, constraint, keyFunction):
     taken, val = greedy(items, constraint, keyFunction) #result, totalvalue
     print('total value of items taken=', val)
     for item in taken: 
         print(' ', item)
-        
+
 def testGreedys (foods, maxUnits):
     print('use greedy by value to allocate ', maxUnits, 'calories')
     testGreedy(foods, maxUnits, Food.getValue)
-    print('use greedy by cost to allocate ', maxUnits,'calories')
+    print('\n use greedy by cost to allocate ', maxUnits,'calories')
     testGreedy(foods, maxUnits, lambda x: 1/Food.getCost(x))
     print('\n Use greedy by density to allocate ', maxUnits, 'calories')
     testGreedy(foods, maxUnits, Food.density) 
