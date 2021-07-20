@@ -1,24 +1,25 @@
 def fib(n):
-    if n==0 or n==1:
+    if n == 0 or n == 1:
         return 1
     else:
-        return fib(n-1) + fib(n-2)
-      
-############
+        return fib(n - 1) + fib(n - 2)
+    
+print('testing fib(n)')
+for i in range(12):
+    print('fib(' + str(i) + ') =', fib(i))
 
-def fastfib(n, memo={}):
-    """Assumes n is an int, memo used only by rescursive calls"""
-    if n==1 or n==0:
+print('============ testing fastfib')
+def fastFib(n, memo = {}):
+    """Assumes n is an int >= 0, memo used only by recursive calls
+       Returns Fibonacci of n"""
+    if n == 0 or n == 1:
         return 1
     try:
         return memo[n]
     except KeyError:
-        result = fastfib(n-2, memo) + fastfib(n-1, memo)
+        result = fastFib(n-1, memo) + fastFib(n-2, memo)
         memo[n] = result
         return result
- 
-for i in range(20):
-    print('fib('+ str(i) +')=', fib(i))
-print('=========')
-for i in range(20):
-    print(fastfib(i))
+
+for i in range(12):
+    print('fib(' + str(i) + ') =', fastFib(i))
