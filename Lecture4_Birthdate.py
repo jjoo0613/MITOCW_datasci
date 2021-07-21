@@ -7,11 +7,21 @@ def sameDate(numPeople, numSame):
         birthDate = random.choice(possibleDates)
         birthdays[birthDate] += 1
     return max(birthdays) >= numSame
+###
+def upgrade_sameDate(numPeople, numSame):
+    possibleDates = 4*list(range(0,57)) + [58] \ #Feb 29th
+                    + 4*list(range(59,366))
+    birthdays = [0]*366
+    for p in range(numPeople):
+        birthDate = random.choice(possibleDates)
+        birthdays[birthDate] += 1
+    return max(birthdays) >= numSame
 
+###
 def birthdayProb(numPeople, numSame, numTrials):
     numHits = 0
     for t in range(numTrials):
-        if sameDate(numPeople, numSame):
+        if sameDate(numPeople, numSame): #or upgrade sameDate
             numHits += 1
     return numHits/numTrials
 
