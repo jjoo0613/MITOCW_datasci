@@ -1,7 +1,8 @@
-import random, pylab
+import random
+from matplotlib import pylab
 
 class Location(object):
-    def __init__(self, x, y)
+    def __init__(self, x, y):
         self.x = x
         self.y = y
     def move(self, deltaX, deltaY):
@@ -30,9 +31,7 @@ class Field(object):
         if drunk not in self.drunks:
             raise ValueError('Drunk not in field')
         xDist, yDist = drunk.takeStep()
-        #use move method of Location to get new location
-        self.drunks[drunk] =\
-            self.drunks[drunk].move(xDist, yDist)
+        self.drunks[drunk] = self.drunks[drunk].move(xDist, yDist)
 
     def getLoc(self, drunk):
         if drunk not in self.drunks:
@@ -54,8 +53,7 @@ class UsualDrunk(Drunk):
 
 class MasochistDrunk(Drunk): #move trend forward
     def takeStep(self):
-        stepChoices = [(0.0,1.1), (0.0,-0.9),
-                       (1.0, 0.0), (-1.0, 0.0)]
+        stepChoices = [(0.0,1.1), (0.0,-0.9),(1.0, 0.0), (-1.0, 0.0)]
         return random.choice(stepChoices)
 
 def walk(f, d, numSteps):
@@ -71,7 +69,7 @@ def simWalks(numSteps, numTrials, dClass):
     for t in range(numTrials):
         f = Field()
         f.addDrunk(Homer, origin)
-        distances.append(round(walk(f, Homer, numSteps ), 1))   #originally numTrials -> error in drunktest! 
+        distances.append(round(walk(f, Homer, numTrials ), 1))    #cause of the Error! it should NOT be numTrials, as we read the code
     return distances
 
 def drunkTest(walkLengths, numTrials, dClass):
@@ -83,9 +81,30 @@ def drunkTest(walkLengths, numTrials, dClass):
   
 random.seed(0)
 drunkTest((10, 100, 1000, 10000), 100, UsualDrunk)
+random.seed(0)
+drunkTest((0,1,2), 100, UsualDrunk)
 
-###
-####
+
+#### Debugging the Error Code.. .'Sanity Test' ####
+def simWalks(numSteps, numTrials, dClass):
+    Homer = dClass('Homer')
+    origin = Location(0, 0)
+    distances = []
+    for t in range(numTrials):
+        f = Field()
+        f.addDrunk(Homer, origin)
+        distances.append(round(walk(f, Homer, numSteps ), 1))    
+    return distances
+
+def drunkTest(walkLengths, numTrials, dClass):
+    for numSteps in walkLengths:
+        distances = simWalks(numSteps, numTrials, dClass)
+        print(dClass.__name__, 'random walk of', numSteps, 'steps')
+        print(' Mean =', round(sum(distances)/len(distances), 4))
+        print(' Max =', max(distances), 'Min =', min(distances))
+        
+random.seed(0)
+drunkTest((0,1,2), 100, UsualDrunk)
 #####
 
 def simAll(drunkKinds, walkLengths, numTrials):
@@ -93,34 +112,3 @@ def simAll(drunkKinds, walkLengths, numTrials):
         drunkTest(walkLengths, numTrials, dClass)
         
 simAll((UsualDrunk, MasochistDrunk), (1000, 10000), 100)
-
-## How do i graph it? 
-#xVals = [1, 2, 3, 4]
-#yVals1 = [1, 2, 3, 4]
-#pylab.plot(xVals, yVals1, 'b-', label = 'first')
-#yVals2 = [1, 7, 3, 5]
-#pylab.plot(xVals, yVals2, 'r--', label = 'second')
-#pylab.legend()
-
-class styleIterator(object):
-    def __init__(self, styles):
-        self.index = 0
-        self.styles = styles
-
-    def nextStyle(self):
-        result = self.styles[self.index]
-        if self.index == len(self.styles) - 1:
-            self.index = 0
-        else:
-            self.index += 1
-        return result
-    
-def simDrunk(numTrials, dClass, walkLengths):
-    meanDistances = []
-    for numSteps in walkLengths:
-        print('Starting simulation of',
-              numSteps, 'steps')
-        trials = simWalks(numSteps, numTrials, dClass)
-        mean = sum(trials)/len(trials)
-        meanDistances.append(mean)
-    return meanDistances
