@@ -7,77 +7,62 @@ def load_cows(filename):
 cowdata1=load_cows('ps1_cow_data.txt')
 #print(cowdata1)
 
-#---- Question A2 ----- 
-def greedy_cow_transport(data, limit=10): 
-    cow_sorted = dict(sorted(data.items(), reverse= True, key=lambda x: x[1]))
-    cowname_list = list(cow_sorted.keys())
-    cowweight_list = list(cow_sorted.values())
-    
+#---- Question A2 -----  
+def greedy_cow_transport(cowdata,limit=10):
+    cow_sorted = dict(sorted(cowdata.items(), reverse= True, key=lambda x: x[1]))
+    cowname = list(cow_sorted.keys())
     result = []
-    index=0
-    trip=[]
     
-    while len(cow_sorted)>0: #keep iterating until we've added all cows to a single trip
-        weight= 0        
-        trip.append([])
-        for i in range(len(cow_sorted)):  
-            if weight + cowweight_list[i] <= limit : 
-                trip[index].append (cowname_list[i])
-                weight+=cowweight_list[i]
-                
-            index+=1        
-            result.append([trip])
-    return result
-     
-
-    
-##Example 1
-def greedy_cow_transport(cows,limit=10):
-   
-    trips = []
-     
-    cows_copy = cows.copy()
- 
-    cows_sorted = dict(sorted(cows_copy.items(), reverse=True, key=lambda x: x[1]))       
-    total_weight = 0
-    
-    list_index = 0
-    #Keep iterating until we've added all cows to a trip
-    while len(cows_sorted) > 0:        
-        total_weight = 0  
-        trips.append([])       
-        for (cow, weight) in cows_sorted.copy().items(): 
-            if total_weight + weight <= limit:
-                trips[list_index].append(cow)
-                total_weight = total_weight + weight 
-                del cows_sorted[cow]
-        list_index += 1
-               
-    return trips  
-
-## Example 2
-def greedy_cow_transport(cows,limit=10):
- # TODO: Your code here
-    cows_copy = sorted(cows, key=cows.get, reverse=True) # cows.get apply to all the key in cows
-    result = []
-    while len(cows_copy) > 0:
-        totalWeight = 0
+    while len(cowname) > 0:
+        weight = 0
         trip = []
-        for name in cows_copy[:]:
-            if cows[name] + totalWeight <= limit:
-                trip.append(name)
-                totalWeight = totalWeight + cows[name]
-                cows_copy.remove(name)
+        for n in cowname:
+            if cowdata[n] + weight <= limit: #cowdata is a dict, will return cowdata.value('n') 
+                trip.append(n)
+                weight += cowdata[n]
+                cowname.remove(n)
         result.append(trip)
     return result
-greedy_cow_transport(cowdata1)
 
-#### Demo
-hello2 = []
-for j in range(1,6):
-    trip = []
-    for i in range(4):
-        trip.append(i+j)
-    hello2.append(trip)
-    
-    
+#greedy_cow_transport(cowdata1)
+
+
+
+#---- Question A3 ----- 
+# From codereview.stackexchange.com """                    
+def partitions(set_):
+    if not set_:
+        yield []
+        return
+    for i in range(2**len(set_)//2):
+        parts = [set(), set()]
+        for item in set_:
+            parts[i&1].add(item)
+            i >>= 1
+        for b in partitions(parts[1]):
+            yield [parts[0]]+b
+
+def get_partitions(set_):
+    for partition in partitions(set_):
+        yield [list(elt) for elt in partition] # """           
+            #get_partitions(cowdata1)        
+            # >>> [['Moo Moo', 'Henrietta', 'Lola', 'Betsy', 'Millie', 'Maggie', 'Oreo', 'Herman', 'Florence', 'Milkshake']]
+            # >>> [['Moo Moo', 'Henrietta', 'Lola', 'Betsy', 'Millie', 'Oreo', 'Herman', 'Florence', 'Milkshake'], ['Maggie']]
+            # >>> [['Moo Moo', 'Henrietta', 'Lola', 'Betsy', 'Millie', 'Maggie', 'Oreo', 'Florence', 'Milkshake'], ['Herman']]
+            # ... and more... 
+
+
+def brute_force_cow_transport(cows,limit=10):
+    result = []
+    for item in get_partitions(cows): 
+        for cowtrip in item: 
+            weight = 0
+            tripscore = 0
+            for cowname in cowtrip:
+                weight += cows[cowname]
+            if weight > 10: 
+                tripscore += 1
+        if tripscore == 0:
+            result.append(item)
+            
+    return result
