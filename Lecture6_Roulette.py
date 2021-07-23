@@ -73,4 +73,31 @@ for numSpins in (1000, 10000, 100000, 1000000):
         pocketReturns = findPocketReturn(gametype(), numTrials,numSpins, False)
         expReturn = 100*sum(pocketReturns)/len(pocketReturns)
         print('Exp. return for', gametype(), '=', str(round(expReturn, 3)) + '%')
-             
+
+        
+def getMeanAndStd(data):
+    mean = sum(data)/float(len(data))
+    tot = 0.0
+    for i in data:
+        tot += (i - mean)**2
+    var = tot/len(data)
+    std = var**0.5
+    
+    return mean, std
+
+ 
+numTrials = 20
+resultDict = {}
+games = (FairRoulette, EuRoulette, AmRoulette)
+for G in games:
+    resultDict[G().__str__()] = []
+for numSpins in (1000, 10000, 100000, 1000000):
+    print('\nSimulate', numTrials, 'trials of', numSpins, 'spins each')
+    for G in games:
+        pocketReturns = findPocketReturn(G(), numTrials,numSpins, False)
+        mean, std = getMeanAndStd(pocketReturns)
+        resultDict[G().__str__()].append((numSpins, 100*mean, 100*std))
+        
+        print('Exp. return for', G(), '=', str(round(100*mean, 3)) + '%,' \
+              + '+/-'+str(round(100*1.96*std, 3)) + '%' \
+              + 'with 95% confidence')    #"why 1.96? two tail z-score 95%I = 1.96sigma"
