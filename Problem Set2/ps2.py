@@ -21,13 +21,11 @@ from graph import Digraph, Node, WeightedEdge
 # Answer: the nodes are the locations people travel between (including outdoor ground of the building) 
 # The graph's edges are the connecting dictionary  of the source-> destination nodes. 
 # The distances are A) the physical distance, and B) The distance spent outdoors - which gives the weight to the edge 
-#
 
 # Problem 2b: Implementing load_map
 def load_map(map_filename):
     """
     Parses the map file and constructs a directed graph
-
     Parameters:
         map_filename : name of the map file
 
@@ -39,9 +37,7 @@ def load_map(map_filename):
             32 76 54 23
         This entry would become an edge from 32 to 76.
 
-    Returns:
-        a Digraph representing the map
-    """
+    mitdata = pd.read_csv(filename, header=None) 
 
     # TODO
     print("Loading map from file...")
