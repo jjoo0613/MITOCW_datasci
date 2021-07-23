@@ -13,8 +13,7 @@ class FairRoulette():
         
     def betPocket(self, pocket, amt): 
         if str(pocket) == str(self.ball): 
-            return amt*self.pocketOdds #bet and win -->  
-                                #win $= rest of holes*betamount
+            return amt*self.pocketOdds #bet and win --> win $ amount = rest of holes (35) *betamount
         else: 
             return - amt
     def __str__(self): 
