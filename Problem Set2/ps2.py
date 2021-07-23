@@ -7,6 +7,7 @@
 #
 # Finding shortest paths through MIT buildings
 #
+
 import unittest
 from graph import Digraph, Node, WeightedEdge
 
@@ -15,13 +16,12 @@ from graph import Digraph, Node, WeightedEdge
 #
 # Problem 2a: Designing your graph
 #
-# What do the graph's nodes represent in this problem? What
-# do the graph's edges represent? Where are the distances
-# represented?
+# What do the graph's nodes represent in this problem? Whatdo the graph's edges represent? Where are the distances represented?
 #
-# Answer:
+# Answer: the nodes are the locations people travel between (including outdoor ground of the building) 
+# The graph's edges are the connecting dictionary  of the source-> destination nodes. 
+# The distances are A) the physical distance, and B) The distance spent outdoors - which gives the weight to the edge 
 #
-
 
 # Problem 2b: Implementing load_map
 def load_map(map_filename):
