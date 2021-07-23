@@ -50,19 +50,40 @@ def get_partitions(set_):
             # >>> [['Moo Moo', 'Henrietta', 'Lola', 'Betsy', 'Millie', 'Oreo', 'Herman', 'Florence', 'Milkshake'], ['Maggie']]
             # >>> [['Moo Moo', 'Henrietta', 'Lola', 'Betsy', 'Millie', 'Maggie', 'Oreo', 'Florence', 'Milkshake'], ['Herman']]
             # ... and more... 
-
+#####
 
 def brute_force_cow_transport(cows,limit=10):
     result = []
-    for item in get_partitions(cows): 
-        for cowtrip in item: 
-            weight = 0
-            tripscore = 0
-            for cowname in cowtrip:
-                weight += cows[cowname]
+    for item in get_partitions(cows):  #single line: [['Moo Moo', 'Henrietta', 'Lola', 'Betsy', 'Millie', 'Maggie', 'Oreo', 'Florence', 'Milkshake'], ['Herman']]
+        for cowtrip in item:  #single trip: ['Moo Moo', 'Henrietta', 'Lola', 'Betsy', 'Millie', 'Maggie', 'Oreo', 'Florence', 'Milkshake'] or ['Herman']
+            weight = 0 #assigned to the trip
+            tripscore = 0 #assigned to the trip
+            for cowname in cowtrip: #Moo Moo in cowtrip ['Moo Moo', 'Henrietta', 'Lola', 'Betsy', 'Millie', 'Maggie', 'Oreo', 'Florence', 'Milkshake'] 
+                weight += cows[cowname] #add each cow's weight per weight of "cowtrip"
             if weight > 10: 
-                tripscore += 1
+                tripscore = 1 #bool -> if have any weight >10 in cowtrip, the tripscore of the cowtrop =1 --> will be excluded 
         if tripscore == 0:
             result.append(item)
             
     return result
+
+#---- Question A4 ----- 
+# Problem 4
+import time 
+
+def compare_cow_transport_algorithms(limit=10):
+    cowdata = load_cows('ps1_cow_data.txt')
+    print('==Greedy Cow Algorithm ==')
+    start = time.time()
+    greedy=greedy_cow_transport(cowdata, limit)
+    end = time.time()
+    print('Greedy cow transport time:', end-start)
+    print('Number of Possible Trips ', len(greedy))
+    print('\n')
+    print('==Brute force Cow Algorithm ==')
+    start1 = time.time()
+    brute=brute_force_cow_transport(cowdata, limit)
+    end1 = time.time()
+    print('Brute force transport time:', end1-start1)
+    print('Number of Possible Trips ', len(brute))
+compare_cow_transport_algorithms()
