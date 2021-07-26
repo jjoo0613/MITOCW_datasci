@@ -18,7 +18,7 @@ class Node(object):
         return self.name
     def __str__(self):
         return self.name
-    def __repr__(self):  #??????
+    def __repr__(self):  
         return self.name
     def __eq__(self, other):
         return self.name == other.name
@@ -48,13 +48,14 @@ class WeightedEdge(Edge):
         self.dest = dest
         self.total_distance = total_distance
         self.outdoor_distance = outdoor_distance
-        pass  # TODO
+         
     def get_total_distance(self):
-        pass  # TODO
+        return self.total_distance
+    
     def get_outdoor_distance(self):
-        pass  # TODO
+        return self.outdoor_distance
     def __str__(self):
-        pass  # TODO
+        return '{}->{} ({},{})'.format(self.src, self.dest, self.total_distance, self.outdoor_distance)
 
 class Digraph(object):
     """Represents a directed graph of Node and Edge objects"""
@@ -74,15 +75,17 @@ class Digraph(object):
     def has_node(self, node):
         return node in self.nodes
     def add_node(self, node):
-        """Adds a Node object to the Digraph. Raises a ValueError if it is
-        already in the graph."""
-        pass  # TODO
+        if node in self.edges:
+            raise ValueError('Duplicate node')
+        else: 
+            self.edges[node] = []
+        
     def add_edge(self, edge):
-        """Adds an Edge or WeightedEdge instance to the Digraph. Raises a
-        ValueError if either of the nodes associated with the edge is not
-        in the  graph."""
-        pass  # TODO
-
+        src = edge.getSource()
+        dest = edge.getDestination()
+        if not (src in self.edges and dest in self.edges):
+            raise ValueError('Node not in graph')
+        self.edges[src].append(dest)
 
 # ================================================================
 # Begin tests -- you do not need to modify anything below this line
