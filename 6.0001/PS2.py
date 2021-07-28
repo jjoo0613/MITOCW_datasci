@@ -52,41 +52,28 @@ wordlist = load_words()
 
 
 def is_word_guessed(secret_word, letters_guessed):
-    '''
-    secret_word: string, the word the user is guessing; assumes all letters are
-      lowercase
-    letters_guessed: list (of letters), which letters have been guessed so far;
-      assumes that all letters are lowercase
-    returns: boolean, True if all the letters of secret_word are in letters_guessed;
-      False otherwise
-    '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
-
+    char_secret_word =list(set(secret_word)) 
+    for i in char_secret_word:
+        if i not in letters_guessed:
+            return False
+        else:
+            return True
 
 def get_guessed_word(secret_word, letters_guessed):
-    '''
-    secret_word: string, the word the user is guessing
-    letters_guessed: list (of letters), which letters have been guessed so far
-    returns: string, comprised of letters, underscores (_), and spaces that represents
-      which letters in secret_word have been guessed so far.
-    '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-
-
+    secret_word_set = list(set(secret_word))
+    for guess in letters_guessed: 
+        if guess in secret_word_set: 
+            secret_word = secret_word.replace(guess, '_ ')
+    return secret_word
 
 def get_available_letters(letters_guessed):
-    '''
-    letters_guessed: list (of letters), which letters have been guessed so far
-    returns: string (of letters), comprised of letters that represents which letters have not
-      yet been guessed.
-    '''
-    # FILL IN YOUR CODE HERE AND DELETE "pass"
-    pass
-    
-    
+    alphabet = list(string.ascii_lowercase)
+    for guess in letters_guessed: 
+        if guess in alphabet: 
+            alphabet.remove(guess)
+    return ''.join(alphabet)
+
+#####################
 
 def hangman(secret_word):
     '''
