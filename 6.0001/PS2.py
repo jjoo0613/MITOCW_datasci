@@ -1,5 +1,5 @@
 # Problem Set 2, hangman.py
-# Name: Justin Joo
+# Name: 
 # Collaborators:
 # Time spent:
 
@@ -13,7 +13,6 @@ import random
 import string
 
 WORDLIST_FILENAME = "words.txt"
-
 
 def load_words():
     print("Loading word list from file...")
@@ -80,7 +79,7 @@ def hangman(secret_word):
         if letter in letters_used: 
             raise ValueError('Error: your guess is already in your guessed list')
         letters_used.append(letter)
-        count -=1
+       
         if is_word_guessed(secret_word, letters_used): #if True
             print('You have successfully guessed the word: ', secret_word)
             break
@@ -88,6 +87,7 @@ def hangman(secret_word):
             print('Your guess ', letter, 'is in the list: ', get_guessed_word(secret_word, letters_used))
         else:         
             print('Your guess ', letter, 'is NOT in the list: ', get_guessed_word(secret_word, letters_used))
+            count -=1
         if count ==0:
             print('\n You have used all your guesses!')
             break
@@ -99,8 +99,6 @@ def hangman(secret_word):
 
 
 # -----------------------------------
-
-
 
 
 
