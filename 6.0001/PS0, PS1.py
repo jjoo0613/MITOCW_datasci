@@ -111,9 +111,23 @@ def calculate_house_portionsave_36 (annual_salary):
     
     timestandard=36 #mo 
     
-    while True:
+def calculate_house_portionsave_36 (annual_salary): 
+    iterate = 0
+    psave1, psave2 = 0, 1 # portion saved, in fraction: 
+    
+    #conditional settings
+    semiannual = 0.07
+    annualreturn = 0.04
+    downpay_portion= 0.25# this is already implanted in calculate semiannualraise function
+    total_cost=1000000 #of house
+    
+    timestandard=36 #mo 
+    
+    while iterate <5 :
         psaveweek1 = calculate_house_time_semiannualraise(annual_salary, psave1, total_cost, semiannual)
-        psaveweek2 = calculate_house_time_semiannualraise(annual_salary, psave1, total_cost, semiannual)
+        if bool(psaveweek1) == False: 
+            psaveweek1 = 99999
+        psaveweek2 = calculate_house_time_semiannualraise(annual_salary, psave2, total_cost, semiannual)
         psavemid = (psave1 + psave2)/2
         psaveweekmid = calculate_house_time_semiannualraise(annual_salary, psavemid, total_cost, semiannual)
         if psaveweekmid == 36:
@@ -123,10 +137,11 @@ def calculate_house_portionsave_36 (annual_salary):
         elif abs(psaveweek1-timestandard) <= abs(psave2-timestandard): 
             psaveweek1, psaveweek2 = psaveweek1, psavemid
             iterate+=1
+            print('case#1: iterate:', iterate, ',   portion saved frame:', psaveweek1,'',psaveweek2)
         elif abs(psaveweek1-timestandard) > abs(psave2-timestandard): 
             psaveweek1, psaveweek2 = psavemid, psaveweek2
             iterate+=1
-        print('iterate:', iterate, 'portion saved frame:', psaveweek1,'',psaveweek2)
+            print('case#2: iterate:', iterate, ',   portion saved frame:', psaveweek1,'',psaveweek2)
 
         
         
