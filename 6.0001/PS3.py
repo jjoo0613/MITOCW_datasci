@@ -67,36 +67,21 @@ def get_frequency_dict(sequence):
 # Problem #1: Scoring a word
 #
 def get_word_score(word, n):
-    """
-    Returns the score for a word. Assumes the word is a
-    valid word.
-
-    You may assume that the input word is always either a string of letters, 
-    or the empty string "". You may not assume that the string will only contain 
-    lowercase letters, so you will have to handle uppercase and mixed case strings 
-    appropriately. 
-
-	The score for a word is the product of two components:
-
-	The first component is the sum of the points for letters in the word.
-	The second component is the larger of:
-            1, or
-            7*wordlen - 3*(n-wordlen), where wordlen is the length of the word
-            and n is the hand length when the word was played
-
-	Letters are scored as in Scrabble; A is worth 1, B is
-	worth 3, C is worth 3, D is worth 2, E is worth 1, and so on.
-
-    word: string
-    n: int >= 0
-    returns: int >= 0
-    """
+    word = list(word.lower())
+    ##first component 
+    val1 = 0
+    for i in word:
+        val1 += SCRABBLE_LETTER_VALUES[i]
+        #the first component value = val1
     
-    pass  # TO DO... Remove this line when you implement this function
+    ##Second Component
+    val2 = 1
+    for i in word:
+        calculated = 7* len(word) - 3*(n - len(word))
+        if calculated >1: 
+            val2 = calculated
+    return val1*val2
 
-#
-# Make sure you understand how this function works and what it does!
-#
 def display_hand(hand):
     """
     Displays the letters currently in the hand.
@@ -148,46 +133,34 @@ def deal_hand(n):
 
 #
 # Problem #2: Update a hand by removing letters
-#
 def update_hand(hand, word):
-    """
-    Does NOT assume that hand contains every letter in word at least as
-    many times as the letter appears in word. Letters in word that don't
-    appear in hand should be ignored. Letters that appear in word more times
-    than in hand should never result in a negative count; instead, set the
-    count in the returned hand to 0 (or remove the letter from the
-    dictionary, depending on how your code is structured). 
+    #hand is a dictionary
+    #make word into a dictionary
+    hand = hand.copy()
+    word = get_frequency_dict(word.lower())
+    
+    for i in word.keys(): 
+        if i in hand.keys(): 
+            hand[i] -= word[i]
+            if hand[i] ==0: 
+                del hand[i]
+    return hand
+    #subtract dictionary, delete key that value = 0 
 
-    Updates the hand: uses up the letters in the given word
-    and returns the new hand, without those letters in it.
-
-    Has no side effects: does not modify hand.
-
-    word: string
-    hand: dictionary (string -> int)    
-    returns: dictionary (string -> int)
-    """
-
-    pass  # TO DO... Remove this line when you implement this function
-
-#
+    
 # Problem #3: Test word validity
 #
 def is_valid_word(word, hand, word_list):
-    """
-    Returns True if word is in the word_list and is entirely
-    composed of letters in the hand. Otherwise, returns False.
-    Does not mutate hand or word_list.
-   
-    word: string
-    hand: dictionary (string -> int)
-    word_list: list of lowercase strings
-    returns: boolean
-    """
-
-    pass  # TO DO... Remove this line when you implement this function
-
-#
+    worddict = get_frequency_dict(word) 
+    x=True
+    if word in word_list:
+        for i in word: 
+            if (i not in hand.keys()) or (worddict[i] > hand[i]):
+                x=False                        
+    else:
+        x=False
+    return x
+ 
 # Problem #5: Playing a hand
 #
 def calculate_handlen(hand):
