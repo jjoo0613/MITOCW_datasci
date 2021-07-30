@@ -137,9 +137,8 @@ def update_hand(hand, word):
     #hand is a dictionary
     #make word into a dictionary
     hand = hand.copy()
-    word = get_frequency_dict(word.lower())
-    
-    for i in word.keys(): 
+    word= get_frequency_dict(word.lower())
+    for i in word: #honey
         if i in hand.keys(): 
             hand[i] -= word[i]
             if hand[i] ==0: 
@@ -149,46 +148,44 @@ def update_hand(hand, word):
 
     
 # Problem #3: Test word validity
-#
-def is_valid_word(word, hand, word_list):
+#def is_valid_word(word, hand, word_list):
     word=word.lower()
     worddict = get_frequency_dict(word) 
     x=True
+    count = 0
     
-    if ('*' in word) : 
-        if word['*'] >1: 
-            raise ValueError ("There can't be more than one wildcard (*) ")
-                #hand('*') = 1 #let's first assume it is already in the dict.,.. 
-        
-        star_location = word.index('*') #location of asterisk (star) 
-        star_wordlist = []
-        
-        for letter in VOWELS:
-            star_wordlist.append( word[: star_location] + letter + word[star_location+1:] )  
-            hand = hand.copy()
-            del hand['*']
-            if letter in hand.keys():
-                hand[letter] += 1
-            else:
-                hand[letter] = 1
-
-        else: 
-            print('problem 1')
+    if '*' not in word: #no wild card scenario
+        if word in word_list: #
+            if ('*') in hand.keys(): # Word: NO, hand: YES 
+                for i in word:
+                    if i not in hand.keys(): 
+                        if i not in VOWELS:
+                            return False
+                        else:
+                            return True
+            else: #Word: NO ., hand: NO
+                for i in word:
+                    if (i not in hand.keys()) or (worddict[i] > hand[i]):
+                        x=False
+        else: #no such word exists 
             x=False
             
-            
-    elif word in word_list:
-        for i in word: 
-            if (i not in hand.keys()) or (worddict[i] > hand[i]):
-                #print('problem 2')
-                x=False                       
-                
-    else:
+    elif worddict['*'] >1: #impossible
         x=False
-        print('problem 3')
-        
+            
+    elif (worddict['*'] ==1) and (hand['*'] == 1):  #WORD: Yes, Hand: YES
+        print('one star scenario')
+        star_location = word.index('*') #location of asterisk (star) 
+        star_wordlist = []
+        for letter in VOWELS: 
+            star_wordlist.append( word[: star_location] + letter + word[star_location+1:] )
+        for wildcard_word in star_wordlist: 
+            if wildcard_word in word_list: 
+                count +=1
+        if count ==0: 
+            x=False
     return x
- 
+                        
  
  # Problem #5: Playing a hand
  #
