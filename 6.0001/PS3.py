@@ -151,18 +151,47 @@ def update_hand(hand, word):
 # Problem #3: Test word validity
 #
 def is_valid_word(word, hand, word_list):
+    word=word.lower()
     worddict = get_frequency_dict(word) 
     x=True
-    if word in word_list:
+    
+    if ('*' in word) : 
+        if word['*'] >1: 
+            raise ValueError ("There can't be more than one wildcard (*) ")
+                #hand('*') = 1 #let's first assume it is already in the dict.,.. 
+        
+        star_location = word.index('*') #location of asterisk (star) 
+        star_wordlist = []
+        
+        for letter in VOWELS:
+            star_wordlist.append( word[: star_location] + letter + word[star_location+1:] )  
+            hand = hand.copy()
+            del hand['*']
+            if letter in hand.keys():
+                hand[letter] += 1
+            else:
+                hand[letter] = 1
+
+        else: 
+            print('problem 1')
+            x=False
+            
+            
+    elif word in word_list:
         for i in word: 
             if (i not in hand.keys()) or (worddict[i] > hand[i]):
-                x=False                        
+                #print('problem 2')
+                x=False                       
+                
     else:
         x=False
+        print('problem 3')
+        
     return x
  
-# Problem #5: Playing a hand
-#
+ 
+ # Problem #5: Playing a hand
+ #
 def calculate_handlen(hand):
     """ 
     Returns the length (number of letters) in the current hand.
